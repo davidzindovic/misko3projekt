@@ -948,7 +948,7 @@ _Bool preveri_zmago(void) {
 
 		for(uint8_t utrip=1;utrip<(stevilo_utripov+1);utrip++)
 		{
-				if (score_L > 3)
+				if (score_D > 3)
 				{
 					HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, utrip%2);
 					HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, utrip%2);
@@ -1015,14 +1015,14 @@ void povecaj_score(int igralec) {
 	}
 
 	// prizgemo lucke sproti glede na score
-	HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, score_L>0);
-	HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, score_L>1);
-	HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, score_L>2);
-	HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, score_L>3);
-	HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, score_D>3);
-	HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, score_D>2);
-	HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, score_D>1);
-	HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, score_D>0);
+	HAL_GPIO_WritePin(LED0_GPIO_Port, LED0_Pin, score_D>0);
+	HAL_GPIO_WritePin(LED1_GPIO_Port, LED1_Pin, score_D>1);
+	HAL_GPIO_WritePin(LED2_GPIO_Port, LED2_Pin, score_D>2);
+	HAL_GPIO_WritePin(LED3_GPIO_Port, LED3_Pin, score_D>3);
+	HAL_GPIO_WritePin(LED4_GPIO_Port, LED4_Pin, score_L>3);
+	HAL_GPIO_WritePin(LED5_GPIO_Port, LED5_Pin, score_L>2);
+	HAL_GPIO_WritePin(LED6_GPIO_Port, LED6_Pin, score_L>1);
+	HAL_GPIO_WritePin(LED7_GPIO_Port, LED7_Pin, score_L>0);
 
 	
     UG_FillFrame(0, 0, 320, 240, C_BLACK);

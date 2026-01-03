@@ -916,8 +916,8 @@ void zogica_reset(void) {
 
 	UG_FillFrame(100, 160, 220, 180, C_BLACK); // Ko pritisneš OK, pobriši napis in nadaljuj
 
-	zogica_dx = (zogica_dx > 0) ? -2.0 : 2.0;
-	zogica_dy = 1.5;
+	//zogica_dx = (zogica_dx > 0) ? -2.0 : 2.0;
+	//zogica_dy = 1.5;
 
 	//return 1;
 

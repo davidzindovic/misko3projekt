@@ -905,24 +905,11 @@ void zogica_reset(void) {
 
 	UG_FillCircle(160, 120, 5, C_WHITE);
 
-	uint32_t ticks=HAL_GetTick();//stevilo tickov od starta
 	
-	while(HAL_GPIO_ReadPin(BTN_OK_GPIO_Port, BTN_OK_Pin) == GPIO_PIN_SET) {
+	//while(HAL_GPIO_ReadPin(BTN_OK_GPIO_Port, BTN_OK_Pin) == GPIO_PIN_SET) {
 		//HAL_Delay(10);
-	}
+	//}
 				
-	ticks=HAL_GetTick()-ticks;
-
-	uint8_t ticks_zadnja_stevka=ticks%10;
-	
-	uint8_t ticks_predzadnja_stevka=ticks%100;
-	ticks_predzadnja_stevka=(ticks_predzadnja_stevka-ticks_predzadnja_stevka%10)/10;
-
-	zogica_dx=(-1+(2*(ticks_zadnja_stevka%2)))*ticks_zadnja_stevka;
-	
-	zogica_dy=(-1+(2*(ticks_predzadnja_stevka>5)))*ticks_predzadnja_stevka;
-
-	if (zogica_dy<(zogica_dx/10))zogica_dy=(zogica_dy/abs(zogica_dy))*abs(zogica_dx)/10;
 	
 	//while(HAL_GPIO_ReadPin(BTN_OK_GPIO_Port, BTN_OK_Pin) == GPIO_PIN_RESET);
 
@@ -1044,6 +1031,33 @@ void povecaj_score(int igralec) {
     narisi_sredino();
     zogica_reset(); // tuki notr se že nariše sredina
 
+	uint32_t ticks=HAL_GetTick();//stevilo tickov od starta
+	  
+	while(HAL_GPIO_ReadPin(BTN_OK_GPIO_Port, BTN_OK_Pin) != GPIO_PIN_RESET) {}
+		
+	ticks=HAL_GetTick()-ticks;//preverimo stevilo tickov, ki so se zgodili v času čakanja na pritisk OK
+
+	uint8_t ticks_zadnja_stevka=ticks%10;
+	
+	uint8_t ticks_predzadnja_stevka=ticks%100;
+	ticks_predzadnja_stevka=(ticks_predzadnja_stevka-ticks_predzadnja_stevka%10)/10;
+
+	//preden gremo v igro določimo x in y komponenti smeri (z omejitvami)
+	//glede na pretečene ticke. Bo dovolj naključno, ker gledamo najmanjši števki
+	//ki se najhitreje spreminjata, zato je rezultat težko reproducirati
+	
+	//omejitev x je lahko poljuben. Predznak x je + če je liha cifra, sicer -
+	zogica_dx=(-1+(2*(ticks_zadnja_stevka%2)))*ticks_zadnja_stevka;
+
+	// - za y uporabimo predzadnjo stevko
+	// - omejitev y mora biti več ko npr. 10% od x. Če bi bil y blizu 0% od x 
+	//		bi lahko žogica vertikalno poletela in se ciklala
+	// - Predznak y je + če je večje od 5, sicer -
+	zogica_dy=(-1+(2*(ticks_predzadnja_stevka>5)))*ticks_predzadnja_stevka;
+
+	//če je prenizko: ohranimo predznak dy (ulomek) in upoštevamo spodnjo mejo 10% dx.
+	if (zogica_dy<(zogica_dx/10))zogica_dy=(zogica_dy/abs(zogica_dy))*abs(zogica_dx)/10;
+	
 	//zogica_reset();
 
 }

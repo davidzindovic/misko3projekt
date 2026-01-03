@@ -905,12 +905,26 @@ void zogica_reset(void) {
 
 	UG_FillCircle(160, 120, 5, C_WHITE);
 
-
+	uint32_t ticks=HAL_GetTick();//stevilo tickov od starta
+	
 	while(HAL_GPIO_ReadPin(BTN_OK_GPIO_Port, BTN_OK_Pin) == GPIO_PIN_SET) {
-		HAL_Delay(10);
+		//HAL_Delay(10);
 	}
+				
+	ticks=HAL_GetTick()-ticks;
 
-	while(HAL_GPIO_ReadPin(BTN_OK_GPIO_Port, BTN_OK_Pin) == GPIO_PIN_RESET);
+	uint8_t ticks_zadnja_stevka=ticks%10;
+	
+	uint8_t ticks_predzadnja_stevka=ticks%100;
+	ticks_predzadnja_stevka=(ticks_predzadnja_stevka-ticks_predzadnja_stevka%10)/10;
+
+	zogica_dx=(-1+(2*(ticks_zadnja_stevka%2)))*ticks_zadnja_stevka;
+	
+	zogica_dy=(-1+(2*(ticks_predzadnja_stevka>5)))*ticks_predzadnja_stevka;
+
+	if (zogica_dy<(zogica_dx/10))zogica_dy=(zogica_dy/abs(zogica_dy))*abs(zogica_dx)/10;
+	
+	//while(HAL_GPIO_ReadPin(BTN_OK_GPIO_Port, BTN_OK_Pin) == GPIO_PIN_RESET);
 
 
 	UG_FillFrame(100, 160, 220, 180, C_BLACK); // Ko pritisneš OK, pobriši napis in nadaljuj

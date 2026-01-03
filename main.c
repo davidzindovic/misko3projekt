@@ -709,7 +709,7 @@ int main(void)
 				zogica_narisi();
 				HAL_Delay(20);
 
-  	    }
+  	    		}
     	      meni_stanje=0;
   	    }
 
@@ -944,7 +944,7 @@ _Bool preveri_zmago(void) {
     if (score_L > 3 || score_D > 3) {
     	//UG_PutString();  // za winnerja
 
-		uint8_t stevilo_utripov=5;
+		uint8_t stevilo_utripov=10;
 
 		for(uint8_t utrip=1;utrip<(stevilo_utripov+1);utrip++)
 		{
@@ -964,6 +964,16 @@ _Bool preveri_zmago(void) {
 				}
 				HAL_Delay(500);
 		}
+
+			score_L = 0;
+			score_D = 0;
+	
+		if (nizi_L >= max_nizov || nizi_D >= max_nizov) {
+			nizi_L = 0;
+			nizi_D = 0;
+
+		// Tukaj pride utripanje luck
+	}
 		
         return 1; // Konec iteracije!
     }
@@ -1001,15 +1011,7 @@ void povecaj_score(int igralec) {
 		if(score_L > 3) nizi_L++;
 		else nizi_D++;
 
-		score_L = 0;
-		score_D = 0;
 
-	if (nizi_L >= max_nizov || nizi_D >= max_nizov) {
-		nizi_L = 0;
-		nizi_D = 0;
-
-		// Tukaj pride utripanje luck
-	}
 
 	//HAL_Delay(1000);
 	}
